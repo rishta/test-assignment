@@ -1,0 +1,28 @@
+App\Entity\User:
+    user_{10..29}:
+        email: "usermail<current()>\\@email.org"
+        username (unique): "<username()>"
+        # password: "<hashPassword(plainPassword<current()>)>"
+        plainPassword: "plainPassword<current()>"
+        __calls:
+          - initUuid: []
+
+App\Entity\PhoneBookEntry:
+    pbe_{100..199}:
+        name: "<name()>"
+        number: "<e164PhoneNumber()>"
+        owner: "@user_1*"
+
+    pbe_{200..299}:
+        name: "<name()>"
+        number: "<e164PhoneNumber()>"
+        owner: "@user_2*"
+
+App\Entity\PhoneBookEntryShare:
+    pbes_{1..210}:
+        entry: "@pbe_1*"
+        share: "@user_2*"
+
+    pbes_{211..420}:
+        entry: "@pbe_2*"
+        share: "@user_1*"

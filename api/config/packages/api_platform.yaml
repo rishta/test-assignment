@@ -1,0 +1,24 @@
+api_platform:
+    title: Test assignment
+    version: 0.1.0
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']
+    patch_formats:
+        json: ['application/merge-patch+json']
+    enable_swagger_ui: true
+    enable_re_doc: true
+    path_segment_name_generator: api_platform.path_segment_name_generator.dash
+    swagger:
+        versions: [3]
+        api_keys:
+            apiKey:
+               name: Authorization
+               type: header    # Mercure integration, remove if unwanted
+    mercure:
+        hub_url: '%env(MERCURE_SUBSCRIBE_URL)%'
+    # Good defaults value for REST APIs
+    defaults:
+        stateless: true
+        # Good cache defaults
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
