@@ -25,7 +25,7 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
-    App\DataPersister\UserDataPersister:
+    App\DataPersister\OwnerDataPersister:
         decorates: 'api_platform.doctrine.orm.data_persister'
 
     App\OpenApi\JwtDecorator:

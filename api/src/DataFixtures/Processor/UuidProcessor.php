@@ -23,25 +23,9 @@ final class UuidProcessor implements ProcessorInterface
      */
     public function preProcess(string $fixtureId, $data): void
     {
-        /**
-         * this should be refactored to use a reflection
-         * which would check for a UUID property and methods
-         */
-        $leave = true;
+        $robj = new \ReflectionObject($data);
 
-        if ($data instanceof User) {
-            $leave = false;
-        }
-
-        if ($data instanceof PhoneBookEntry) {
-            $leave = false;
-        }
-
-        if ($data instanceof PhoneBookEntryShare) {
-            $leave = false;
-        }
-
-        if ($leave) {
+        if (!$robj->hasMethod('setUuid')) {
             return;
         }
 

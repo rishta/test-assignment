@@ -10,13 +10,16 @@ use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberUtil;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
  *     attributes={"security"="is_granted('ROLE_USER')"},
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}},
  *     collectionOperations={
  *         "get"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"},
- *         "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *         "post"={"security"="is_granted('ROLE_USER')"}
  *     },
  *     itemOperations={
  *         "get"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"},
@@ -40,6 +43,7 @@ class PhoneBookEntry
     /**
      * @var UuidInterface
      * @ApiProperty(identifier=true)
+     * @Groups({"read"})
      *
      * @ORM\Column(type="uuid", unique=true)
      */
@@ -48,6 +52,7 @@ class PhoneBookEntry
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read"})
      *
      * @var User
      */
@@ -55,6 +60,7 @@ class PhoneBookEntry
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read","write"})
      *
      * @var string
      */
@@ -62,10 +68,16 @@ class PhoneBookEntry
 
     /**
      * @ORM\Column(type="phone_number")
+     * @Groups({"read","write"})
      *
      * @var PhoneNumber
      */
     private $number;
+
+    public function __construct()
+    {
+        $this->uuid = Uuid::Uuid4();
+    }
 
     public function getId(): ?int
     {
@@ -76,7 +88,7 @@ class PhoneBookEntry
      * getUuid
      *
      */
-    public function getUuid():UuidInterface
+    public function getUuid():?UuidInterface
     {
         return $this->uuid;
     }

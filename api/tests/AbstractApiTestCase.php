@@ -48,3 +48,4 @@ abstract class AbstractApiTestCase extends ApiTestCase
         return $this->token;
     }
 }
+
